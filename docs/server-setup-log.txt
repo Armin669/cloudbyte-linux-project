@@ -1,0 +1,36 @@
+CloudByte server setup log
+Date: 2026-09-28
+Author: Armin (admin)
+
+Groups
+- Engineering
+- Marketing
+- Operations
+- Admins
+
+Users
+- Engineering: alice, bob, carol, dave
+- Marketing: emma, frank, grace
+- Operations: henry, iris, jack, kate, leo
+- Admins: kate, leo
+  Note: kate and leo are in Operations and Admins.
+
+Directories
+/shared/engineering     group Engineering  mode 770
+/shared/marketing       group Marketing    mode 770
+/shared/operations      group Operations   mode 770
+/shared/company-docs    group Admins       mode 775
+/logs/reports           group Admins       mode 775
+/logs                   left as root:root  mode 755
+
+Access tests
+- alice: write in engineering, blocked from marketing
+- emma: write in marketing, blocked from engineering
+- henry: write in operations, blocked from engineering
+- kate: write in operations and company-docs (created memo.txt)
+- alice: can read memo.txt, cannot write to company-docs
+
+Problems
+- First used chmod 2770, so ls showed "s" (setgid) instead of 770/775.
+- Fixed with chmod g-s, then chmod 770 and 775.
+- Logged out of the VM once; came back with vagrant ssh. Config was still there.
