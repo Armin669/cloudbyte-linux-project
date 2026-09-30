@@ -40,5 +40,26 @@ log in one go. Run it on the VM with:
 # Track 1 (Vagrant)
 bash /vagrant/verify-foundations.sh
 
+## Section 2: File Management and Permissions
 
+Hardened the team folders and added a shared dropbox. Setgid makes team
+ownership reliable; the sticky bit makes the dropbox tamper-resistant.
+A permissions test report records what was attempted and what happened.
+
+### Updated directory modes
+
+| Path | Owner:Group | Mode | What's special |
+| --------------------- | ------------------ | ------ | ----------------------------------------- |
+| `/shared/engineering` | `root:engineering` | `2770` | setgid set |
+| `/shared/marketing` | `root:marketing` | `2770` | setgid set |
+| `/shared/operations` | `root:operations` | `2770` | setgid set |
+| `/shared/dropbox` | `root:admins` | `1773` | sticky bit; others can write but not list |
+
+### Verification
+
+`verify-permissions.sh` checks the team folders, the dropbox, the sample
+files, and setgid propagation. Run it on the VM with:
+
+```bash
+bash /vagrant/verify-permissions.sh
 
