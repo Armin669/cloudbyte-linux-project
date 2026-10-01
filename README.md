@@ -63,3 +63,30 @@ files, and setgid propagation. Run it on the VM with:
 ```bash
 bash /vagrant/verify-permissions.sh
 
+## Section 3: User Onboarding Automation
+
+Replaced Section 1's manual user-creation work with a single script,
+`scripts/onboard-user.sh`, that takes either an interactive prompt or a
+CSV of new hires. Strict mode catches failures early, a `create_user`
+function carries the four mutating commands, and `--dry-run` lets the
+script be exercised without touching real accounts.
+
+### Script flags
+
+| Flag | Purpose |
+| -------------- | ------------------------------------------------- |
+| `--csv PATH` | Read users from a CSV (`username,group,fullname`) |
+| `--dry-run` | Print intended actions without creating anything |
+| `-h`, `--help` | Print the Usage block from the script header |
+
+A sample CSV ships at `data/new-hires.csv` for repeat runs and
+idempotency checks.
+
+### Verification
+
+`verify-onboarding.sh` walks the script and the CSV end-to-end.
+Run it on the VM with:
+
+```bash
+bash /vagrant/verify-onboarding.sh
+
