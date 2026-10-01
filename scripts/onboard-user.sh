@@ -16,6 +16,7 @@ fi
 
 TEMP_PASSWORD="ChangeMe123!"
 DRY_RUN=false
+LOG=false
 CSV_FILE=""
 
 while [ $# -gt 0 ]; do
@@ -26,6 +27,10 @@ while [ $# -gt 0 ]; do
             ;;
         --dry-run)
             DRY_RUN=true
+            shift
+            ;;
+        --log)
+            LOG=true
             shift
             ;;
         -h|--help)
@@ -65,6 +70,10 @@ create_user() {
     chage -d 0 "$username"
 
     echo "Created $username in group $group with temp password (must change on first login)."
+
+    if [ "$LOG" = true ]; then
+        echo "$(date "+%Y-%m-%d %H:%M:%S")  created  $username  $group" >> /var/log/cloudbyte-onboarding.log
+    fi
 }
 
 if [ -n "$CSV_FILE" ]; then
