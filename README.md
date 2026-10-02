@@ -90,3 +90,27 @@ Run it on the VM with:
 ```bash
 bash /vagrant/verify-onboarding.sh
 
+## Section 4: Backup Automation
+
+Built two scheduled scripts to keep the team folders backed up.
+`scripts/backup-shared.sh` archives `/shared` (excluding the backup
+directory itself) into a date-stamped `.tar.gz` under `/shared/backups`,
+with a `trap` that removes a partial archive if the script is interrupted.
+`scripts/cleanup-backups.sh` prunes archives older than seven days, with a
+`--preview` flag that lists what would go without deleting anything.
+Root cron drives both.
+
+### Schedule
+
+| Script | Schedule | Log file |
+| ---------------------------- | ----------- | -------------------------------- |
+| `scripts/backup-shared.sh` | `0 2 * * *` | `/var/log/cloudbyte-backup.log` |
+| `scripts/cleanup-backups.sh` | `0 3 * * 0` | `/var/log/cloudbyte-cleanup.log` |
+
+### Verification
+
+`verify-backup.sh` checks the backup directory, both scripts, and the crontab.
+Run it on the VM with:
+
+```bash
+bash /vagrant/verify-backup.sh
