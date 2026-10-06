@@ -1,0 +1,65 @@
+CloudByte differences log: local VM vs EC2 deployment
+Author: Armin
+Drafted: 2026-10-06
+
+1. DEFAULT USER
+
+Observation: The default login user on EC2 is ec2-user, with home directory
+/home/ec2-user. On the local VM the equivalent was vagrant (/home/vagrant).
+
+Implication: Every absolute path in the cron entries now begins /home/ec2-user/...
+instead of /vagrant/.... Any script or scheduled job that hard-coded the old mount
+path has to be re-pathed for the host it runs on. The onboarded users (alice, bob,
+and the rest) are unaffected, because onboard-user.sh creates them independently
+of whoever the default login user happens to be.
+
+2. HOME DIRECTORY
+
+Observation: pwd on EC2 printed /home/ec2-user. On the VM it printed /home/vagrant.
+
+Implication: Cron has no home of its own, so every script path must be written out
+in full under /home/ec2-user/cloud-course/linux-project/scripts/. The staff home
+directories under /home/alice and the rest are created by the script and do not
+need editing.
+
+3. NO SHARED MOUNT
+
+Observation: df -h showed an 8G root disk and no /vagrant or /host mount.
+
+Implication: On the VM, the laptop repo appeared automatically at /vagrant. On EC2
+it does not. Files had to be sent with scp, then moved with sudo into folders
+ec2-user cannot write.
+
+4. TIME ZONE
+
+Observation: timedatectl showed UTC, offset +0000. The laptop is in Berlin time.
+
+Implication: 0 2 * * * fires at 02:00 UTC, which is 04:00 in Berlin during summer
+time and 03:00 in winter. The backup no longer lines up with local night.
+
+5. CRONIE DEFAULT STATE
+
+Observation: dnf list installed cronie printed "No matching Packages to list".
+
+Implication: This was also true of the local VM at the start of Section 4. A fresh
+Amazon Linux box is minimal. Cron had to be installed and enabled before the
+schedule could run. We cannot assume a tool is present just because the VM had it
+later.
+
+6. CPU ARCHITECTURE
+
+Observation: uname -m printed x86_64.
+
+Implication: The scripts are shell, so architecture did not block the deploy. A
+binary built on a different CPU would not have run. Worth recording before any
+later tool is copied as a compiled file.
+
+7. KEY AND SHORT NAME
+
+Observation: SSH from Windows needed the .pem at ~/.ssh/cloudbyte-ec2.pem, and
+chmod did not always change the displayed mode. A config alias then replaced the
+long ssh -i command.
+
+Implication: The key must stay out of git. If the instance IP changes, only the
+HostName line in ~/.ssh/config needs editing. The EC2 build itself does not store
+the key.

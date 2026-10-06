@@ -114,3 +114,16 @@ Run it on the VM with:
 
 ```bash
 bash /vagrant/verify-backup.sh
+
+## Section 6: EC2 Deployment
+
+Deployed the CloudByte server to an Amazon Linux 2023 EC2 instance.
+Rebuilt the four groups, the twelve users (kate and leo also in admins),
+and the /shared tree. Sent docs and scripts with scp, re-established cron
+with /home/ec2-user paths, and wrote docs/differences-log.txt.
+
+Files added this section:
+- verify-ec2.sh: runs on EC2 and checks the deployment.
+- data/cloudbyte-users.csv: the twelve-staffer roster.
+- docs/differences-log.txt: local VM versus EC2 notes.
+- scripts/deploy-to-ec2.sh: optional helper that resyncs scripts, data, and the verifier in one command.
