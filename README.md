@@ -127,3 +127,12 @@ Files added this section:
 - data/cloudbyte-users.csv: the twelve-staffer roster.
 - docs/differences-log.txt: local VM versus EC2 notes.
 - scripts/deploy-to-ec2.sh: optional helper that resyncs scripts, data, and the verifier in one command.
+
+## Section 7: Log Analysis Tools
+
+Built two log-analysis scripts on the EC2 server. `log-generator.sh` fabricates a
+synthetic application log at `/logs/cloudbyte-app.log` with weighted severity
+levels spread across the day. `analyse-logs.sh` summarises it into a timestamped
+report under `/logs/reports/`: counts by severity, the busiest hour, and every
+CRITICAL entry, using a `sort | uniq -c | sort -rn` pipeline. Scheduled the
+analysis hourly via cron, and added `verify-logs.sh` to check the lot.
