@@ -38,6 +38,17 @@ run_tool() {
     bash "$path" "$@" || echo "Warning: $tool exited with an error."
 }
 
+show_latest_health() {
+    local latest
+    latest="$(ls -1t /logs/health-reports/health-*.txt 2>/dev/null | head -1)"
+    if [ -z "$latest" ]; then
+        echo "No health report found."
+        return 0
+    fi
+    echo "Latest report: $latest"
+    cat "$latest"
+}
+
 while true; do
     echo ""
     echo "CloudByte admin menu"
@@ -47,6 +58,7 @@ while true; do
     echo "4) Generate a test log"
     echo "5) Analyse logs"
     echo "6) System health report"
+    echo "7) View latest health report"
     echo "0) Quit"
     read -rp "Choose: " choice || break
     case "$choice" in
@@ -56,6 +68,7 @@ while true; do
         4) run_tool log-generator.sh ;;
         5) run_tool analyse-logs.sh ;;
         6) run_tool system-health.sh ;;
+        7) show_latest_health ;;
         0) echo "Bye."; break ;;
         *) echo "invalid choice: $choice" ;;
     esac
