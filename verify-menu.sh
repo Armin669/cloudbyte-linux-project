@@ -1,6 +1,6 @@
 #!/bin/bash
 # verify-menu.sh: CloudByte Section 9 admin-menu self-check (runs on EC2).
-# Author:  WSB
+# Author:  Armin
 # Created: 2026-10-09
 # Purpose: Black-box test the admin menu -- never reads its source, only its
 #          behaviour: present + executable, --help works unprivileged, the root

@@ -1,5 +1,7 @@
 #!/bin/bash
 # analyse-logs.sh: summarise /logs/cloudbyte-app.log
+# Author:  Armin
+# Created: 2026-10-09
 # Usage: sudo bash analyse-logs.sh [--level LEVEL] [--help]
 
 LOG=/logs/cloudbyte-app.log

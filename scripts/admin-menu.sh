@@ -1,6 +1,6 @@
 #!/bin/bash
 # admin-menu.sh: one front door for the six CloudByte admin tools.
-# Author:  WSB
+# Author:  Armin
 # Created: 2026-10-09
 # Purpose: Print a numbered menu, guard each tool, run the chosen one, and
 #          re-prompt until the user quits.

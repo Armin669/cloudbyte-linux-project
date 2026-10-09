@@ -1,5 +1,7 @@
 #!/bin/bash
 # restore-backup.sh: CloudByte interactive restore tool.
+# Author:  Armin
+# Created: 2026-10-09
 # Usage: sudo bash scripts/restore-backup.sh
 
 set -eo pipefail
