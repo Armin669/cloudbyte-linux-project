@@ -145,3 +145,14 @@ users into a printf-formatted, timestamped report under /logs/health-reports/.
 It raises basic alerts (disk over 80%, zombie processes, a monitored service
 down) and archives reports older than a week. Scheduled every 2 hours via cron,
 and added verify-health.sh to check the lot.
+## Section 9: Admin Menu
+
+Optional front door for the six tools. scripts/admin-menu.sh prints a numbered menu, checks each tool exists before running it, and loops until you choose 0. It finds the tools from its own folder, not from $HOME, so it still works under sudo. Cleanup runs in preview mode so one keystroke cannot delete backups.
+
+Run it on EC2 with:
+
+sudo bash ~/cloud-course/linux-project/scripts/admin-menu.sh
+
+verify-menu.sh checks help, the root guard, a real dispatch, a bad choice, and a missing tool. Run it without sudo:
+
+bash ~/cloud-course/linux-project/verify-menu.sh
